@@ -7,7 +7,6 @@ Usage: python rank.py --candidates ./candidates.jsonl --out ./submission.csv
 import argparse
 import json
 import gzip
-import re
 from datetime import date
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity

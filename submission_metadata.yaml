@@ -1,0 +1,64 @@
+team_name: "Kitty-The-Developer"
+
+primary_contact:
+  name: "Aditya Chaurasia"
+  email: "adityachaurasia06@outlook.com"
+  phone: "+91-8744872739"
+
+team_members:
+  - name: "Aditya Chaurasia"
+    email: "adityachaurasia06@outlook.com"
+    role: "Solo participant"
+
+github_repo: "https://github.com/Cat-The-Developer-2/redrob-candidate-ranker"
+sandbox_link: "https://colab.research.google.com/drive/1MZfIji5yuI8H9sfL3jJU3MXaCLmME5iX?usp=sharing"
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
+
+compute:
+  platform: "Local laptop (Windows) + Google Colab (GPU) for embedding pre-computation"
+  cpu_cores: 4
+  ram_gb: 8
+  python_version: "3.14.6"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: true
+  pre_computation_time_minutes: 6 or 7
+
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude for architecture discussion, writing and debugging the ranking
+  script, fixing bugs (e.g. tie-break sorting, a false-positive honeypot
+  detection issue), and guiding the overall build process end-to-end. No
+  candidate data was sent to any hosted LLM API — all candidate processing
+  happens locally via open-source sentence-transformers embeddings and
+  rule-based Python logic.
+
+methodology_summary: |
+  Hybrid ranker combining semantic embeddings with explicit rule-based
+  scoring. Candidate and JD text are embedded using all-MiniLM-L6-v2
+  (precomputed once on GPU via Colab); cosine similarity captures semantic
+  fit, catching candidates who lack exact keyword overlap but have genuinely
+  relevant experience. This is combined with rule-based scores for title
+  relevance, required skills (vector DBs, retrieval, evaluation frameworks),
+  experience range, and location fit, since semantic similarity alone is
+  fooled by keyword-stuffed but irrelevant profiles (e.g. HR Managers
+  mentioning "GenAI" surfaced at the top of pure semantic ranking during
+  testing). Penalties are applied for consulting-only careers, title-chasing
+  patterns, and framework-only (LangChain-only) AI exposure, per the JD's
+  explicit disqualifiers. Behavioral signals (responsiveness, activity,
+  notice period) apply a multiplicative modifier on the final score.
+  Honeypot candidates (impossible profiles, e.g. "expert" skills with 0
+  months used) are filtered out. The ranking step itself loads precomputed
+  embeddings and runs in seconds on CPU; only the one-time embedding
+  generation requires GPU pre-computation, in line with the no-GPU,
+  no-network ranking constraint.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
